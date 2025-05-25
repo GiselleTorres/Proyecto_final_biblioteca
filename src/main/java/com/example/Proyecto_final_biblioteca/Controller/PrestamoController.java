@@ -3,9 +3,10 @@ package com.example.Proyecto_final_biblioteca.Controller;
 import com.example.Proyecto_final_biblioteca.Model.Prestamo;
 import com.example.Proyecto_final_biblioteca.Service.PrestamoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-        import java.util.List;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -33,5 +34,14 @@ public class PrestamoController {
     @DeleteMapping("/{id}")
     public void deletePrestamo(@PathVariable Long id) {
         prestamoService.delete(id);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Prestamo> updatePrestamo(
+            @PathVariable Long id,
+            @RequestBody Prestamo dto) {
+
+        Prestamo updated = prestamoService.update(id, dto);
+        return ResponseEntity.ok(updated);
     }
 }

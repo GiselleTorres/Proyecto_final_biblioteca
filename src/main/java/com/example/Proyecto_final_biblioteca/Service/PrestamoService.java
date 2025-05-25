@@ -56,6 +56,15 @@ public class PrestamoService {
                         "Préstamo no encontrado con id " + id));
         prestamoRepository.delete(p);
     }
+
+    public Prestamo update(Long id, Prestamo dto) {
+        Prestamo existing = prestamoRepository.findById(id)
+                .orElseThrow(() ->
+                        new EntityNotFoundException("Préstamo no encontrado con id " + id));
+        existing.setFechaInicio(dto.getFechaInicio());
+        existing.setFechaFin(  dto.getFechaFin());
+        return prestamoRepository.save(existing);
+    }
 }
 
 
