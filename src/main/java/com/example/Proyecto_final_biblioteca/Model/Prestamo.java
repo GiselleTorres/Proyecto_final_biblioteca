@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.time.LocalDate;
 
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idPrestamo")
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 @Entity
 @NoArgsConstructor
@@ -32,7 +31,7 @@ public class Prestamo {
     @JsonBackReference
     private Usuario usuario;
 
-    @JsonIdentityReference(alwaysAsId = true)
+
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property  = "idLibro")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_libro", nullable = false)

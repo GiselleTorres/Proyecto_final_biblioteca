@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.util.List;
 
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property = "idLibro")
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 @NoArgsConstructor
 @AllArgsConstructor
@@ -41,7 +40,6 @@ public class Libro {
 
 
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property  = "idPrestamo")
-    @JsonIdentityReference(alwaysAsId = true)
     @JsonIgnoreProperties("libro")
     @OneToMany(mappedBy = "libro",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Prestamo> prestamos;
