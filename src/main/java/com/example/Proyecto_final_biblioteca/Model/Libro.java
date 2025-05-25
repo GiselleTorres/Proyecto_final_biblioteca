@@ -1,13 +1,17 @@
 package com.example.Proyecto_final_biblioteca.Model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.util.List;
 
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
@@ -17,17 +21,25 @@ public class Libro {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idLibro;
+    private Long idLibro;
 
     private String titulo;
     private String autor;
-    private int añoPublicacion;
+
+    @Column(name = "anio_publicacion")
+    private Integer anioPublicacion;
+
     private String isbn;
 
-    @ManyToOne
-    @JoinColumn(name = "id_categoria")
+    @JsonIdentityReference (alwaysAsId = true)
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
+            property  = "idCategoria")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_categoria", nullable = false)
     private Categoria categoria;
 
-    @OneToMany(mappedBy = "libro")
+    @JsonIgnoreProperties("libro")
+    @OneToMany(mappedBy = "libro",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Prestamo> prestamos;
 }
+

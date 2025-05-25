@@ -1,11 +1,12 @@
 package com.example.Proyecto_final_biblioteca.Model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
+import lombok.*;
 import java.util.List;
 
 @NoArgsConstructor
@@ -17,10 +18,10 @@ public class Categoria {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idCategoria;
+    private Long idCategoria;
 
     private String nombre;
 
-    @OneToMany(mappedBy = "categoria")
-    private List<Libro> libros;
 }
+
+

@@ -2,6 +2,7 @@ package com.example.Proyecto_final_biblioteca.Service;
 
 import com.example.Proyecto_final_biblioteca.Model.Libro;
 import com.example.Proyecto_final_biblioteca.Repository.LibroRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,8 @@ public class LibroService {
     }
 
     public void delete(Long id) {
-        libroRepository.deleteById(id);
+        Libro libro = libroRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Libro no existe: " + id));
+        libroRepository.delete(libro);
     }
 }

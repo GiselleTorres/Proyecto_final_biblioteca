@@ -3,6 +3,7 @@ package com.example.Proyecto_final_biblioteca.Controller;
 import com.example.Proyecto_final_biblioteca.Model.Categoria;
 import com.example.Proyecto_final_biblioteca.Service.CategoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,5 +34,19 @@ public class CategoriaController {
     @DeleteMapping("/{id}")
     public void deleteCategoria(@PathVariable Long id) {
         categoriaService.delete(id);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Categoria> updateCategoria(
+            @PathVariable Long id,
+            @RequestBody Categoria catDetails) {
+
+        Categoria cat = categoriaService.findById(id)
+                .orElseThrow(() -> new RuntimeException("Categoría no encontrada con id " + id));
+
+        cat.setNombre(catDetails.getNombre());
+
+        Categoria actualizado = categoriaService.save(cat);
+        return ResponseEntity.ok(actualizado);
     }
 }

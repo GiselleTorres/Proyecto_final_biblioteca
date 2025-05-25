@@ -29,4 +29,6 @@ public class CategoriaService {
     public void delete(Long id) {
         categoriaRepository.deleteById(id);
     }
+    @Autowired
+    private CategoriaRepository repo;
 }

@@ -3,6 +3,7 @@ package com.example.Proyecto_final_biblioteca.Controller;
 import com.example.Proyecto_final_biblioteca.Model.Usuario;
 import com.example.Proyecto_final_biblioteca.Service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
         import java.util.List;
@@ -33,5 +34,22 @@ public class UsuarioController {
     @DeleteMapping("/{id}")
     public void deleteUsuario(@PathVariable Long id) {
         usuarioService.delete(id);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Usuario> updateUsuario(
+            @PathVariable Long id,
+            @RequestBody Usuario userDetails) {
+
+        Usuario existing = usuarioService.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con id " + id));
+
+        // Actualiza los campos que quieras exponer
+        existing.setNombre(userDetails.getNombre());
+        existing.setEmail(userDetails.getEmail());
+        existing.setTelefono(userDetails.getTelefono());
+
+        Usuario updated = usuarioService.save(existing);
+        return ResponseEntity.ok(updated);
     }
 }
