@@ -1,19 +1,19 @@
 package com.example.Proyecto_final_biblioteca.Model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.*;
 import java.util.List;
 
+/**
+ * Categoría de libros.
+ */
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "libros"})
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Setter
 @Getter
-@Entity
+@Setter
 public class Categoria {
 
     @Id
@@ -22,6 +22,9 @@ public class Categoria {
 
     private String nombre;
 
+    @OneToMany(mappedBy = "categoria")
+    @JsonIgnoreProperties("categoria") // evita bucle libro->categoria->libros
+    private List<Libro> libros;
 }
 
 

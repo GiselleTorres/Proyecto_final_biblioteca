@@ -1,22 +1,19 @@
 package com.example.Proyecto_final_biblioteca.Model;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import java.util.List;
 
-@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+/**
+ * Entidad Libro con la categoría como objeto completo.
+ */
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Setter
 @Getter
-@Entity
+@Setter
 public class Libro {
 
     @Id
@@ -31,17 +28,12 @@ public class Libro {
 
     private String isbn;
 
-    @JsonIdentityReference (alwaysAsId = true)
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
-            property  = "idCategoria")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER) // asegurar carga de categoría
     @JoinColumn(name = "id_categoria", nullable = false)
+    @JsonIgnoreProperties("libros")    // evita bucle categoria->libros->categoria
     private Categoria categoria;
 
-
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property  = "idPrestamo")
-    @JsonIgnoreProperties("libro")
-    @OneToMany(mappedBy = "libro",cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "libro", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("libro")      // evita bucle prestamo->libro->prestamos
     private List<Prestamo> prestamos;
 }
-

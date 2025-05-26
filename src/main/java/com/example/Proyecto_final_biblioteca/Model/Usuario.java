@@ -1,9 +1,7 @@
 package com.example.Proyecto_final_biblioteca.Model;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,6 +28,5 @@ public class Usuario {
     @JsonManagedReference
     @JsonIdentityReference(alwaysAsId = true)
     @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property  = "idPrestamo")
     private List<Prestamo> prestamos;
 }

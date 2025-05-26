@@ -1,14 +1,14 @@
 package com.example.Proyecto_final_biblioteca.Model;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import java.time.LocalDate;
 
-@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+/**
+ * Entidad Préstamo.
+ */
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,25 +20,16 @@ public class Prestamo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idPrestamo;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate fechaInicio;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate fechaFin;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_usuario", nullable = false)
-    @JsonBackReference
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_usuario")
+    @JsonIgnoreProperties("prestamos") // evita bucle usuario->prestamos->usuario
     private Usuario usuario;
 
-
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property  = "idLibro")
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_libro", nullable = false)
-    @JsonIgnoreProperties("prestamos")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_libro")
+    @JsonIgnoreProperties("prestamos") // evita bucle libro->prestamos->libro
     private Libro libro;
 }
-
-
-
-
